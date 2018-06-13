@@ -1,62 +1,68 @@
 import paseo.*
+
+//NO pude terminar los test 
 describe "test de una familia que NO pasea" {
 
-//NOTA: Este fixture está incompleto y sirve para comenzar a testear el examen.
-//Es a modo de ayuda, pero no es obligatorio respetar este escenario. 
-// Puede modificarse tanto como sea necesario.
 
-	var mediaIzquierda = new XXX(desgaste = 1) //elemento de par
-	var mediaDerecha = new XXX(desgaste = 3)
+	var mediaIzquierda = new PrendaPar(talle = s, desgaste = 1, nivelDeAbrigo =0,numeroPar= 1 ) 
+	
+	var mediaDerecha = new PrendaPar(talle = s, desgaste = 3, nivelDeAbrigo = 0,numeroPar =2)
 	
 	//prenda par, la media izquierda tiene que tener 1 de desgaste, la derecha 3, el abrigo es default 0
-    var mediasZoe = new XXX(talle=s /* completar*/) 
+    var mediasZoe = new PrendaPares(pares = #{mediaIzquierda,mediaDerecha}, talle = s, nivelDeAbrigo = 0,desgaste= 4) 
 	
 	//prenda par, el izquierdo y derecho tiene los valores default (desgaste 0, abrigo 1)
-	var zapatillasZoe = new XXX(talle=s) 
+	var zapatillaIzquierda = new PrendaPar(talle = xl, desgaste = 0, nivelDeAbrigo = 1,numeroPar=1 )
+	var zapatillaDerecha = new PrendaPar(talle = xl, desgaste = 0, nivelDeAbrigo = 1,numeroPar=2)
+	
+	var zapatillasZoe = new PrendaPares(pares = #{zapatillaIzquierda,zapatillaDerecha}, talle = s, desgaste = 0, nivelDeAbrigo = 2) 
 	
 	//prenda pesada con 5 de abrigo
-	var jeanZoe = new XXX(talle=s, abrigo=5) 
+	var jeanZoe = new PrendaPesada(talle = xl, desgaste = 0, nivelDeAbrigo = 5) 
 	
 	//prenda liviana con desgaste default: 0
-	var remeraZoe = new XXX(talle=s) 
+	var remeraZoe = new PrendaLiviana(talle = m, desgaste = 0, nivelDeAbrigo = 2) 
 	// prenda pesada con desgaste default: 0
-	var camperaZoe = new XXX(talle=s) 
+	
+	var camperaZoe = new PrendaPesada(talle = l, desgaste = 0, nivelDeAbrigo = 5) 
 
 	//un juguete para niños de 5 a 100 anios
-	var ukelele = new XXX(min=5, max=100)
+	var ukelele = new Juguete(edadMinimaRecomendada=5, edadMaximaRecomendada=100)
 	
 	//prenda liviana con un desgaste de 5
-	var remeraMilena = new XXX(talle=xs, desgaste=5) //prenda liviana
+	var remeraMilena = new PrendaLiviana(talle=xs, desgaste=5,nivelDeAbrigo= 0) //prenda liviana
 	//prenda liviana con desgaste default: 0
-	var calzaMilena = new XXX(talle=xs) //prenda liviana
+	var calzaMilena = new PrendaLiviana(talle=xs,desgaste=0,nivelDeAbrigo= 0) //prenda liviana
 
 	//prenda par, la ojota izquierda tiene que tener 1 de desgaste y 2 de abrigo, la ojota derecha tiene 3 de desgaste y 3 de abrigo
-    var ojotasMilena = new XXX(talle=l /*completar */) 
+    var ojotaIzquierda = new PrendaPar(talle = s, desgaste = 1, nivelDeAbrigo = 2,numeroPar=1) 
+    var ojotaDerecha = new PrendaPar(talle = s, desgaste = 1, nivelDeAbrigo = 2,numeroPar=2) 
+    var ojotasMilena = new PrendaPares(pares = #{ojotaIzquierda,ojotaDerecha}, talle = s, desgaste = 1, nivelDeAbrigo = 4)
 	
 	//ninio
-	var zoe = new XXX(talle=s, edad=11, prendas=#{mediasZoe, zapatillasZoe, jeanZoe, remeraZoe, camperaZoe }) 
+	var zoe = new Ninio( comodidad = 10,edad=11, prendas=#{mediasZoe, zapatillasZoe, jeanZoe, remeraZoe, camperaZoe }) 
 	//ninio problematico
-	var milena = new XXX(talle=xs, edad=2, prendas = #{remeraMilena, calzaMilena, ojotasMilena }, juguete=ukelele)
+	var milena = new NinioProblematico(comodidad = 10,edad=2, prendas = #{remeraMilena, calzaMilena, ojotasMilena }, juguete= ukelele)
 	
 	//familia	
-	var familiaAptaSalir = new XXX(ninios = #{ zoe})
+	var familiaAptaSalir = new Familia(ninios = #{ zoe})
 
 	//familia	
-	var familiaNoAptaParaSalir= new XXX(ninios = #{milena, zoe})
+	var familiaNoAptaParaSalir= new Familia(ninios = #{milena, zoe})
 	
 	
-//PUNTO 1	
-//	test "comodidad" {
-//		
-//		assert.equals(6 , /* comodida de las mediasZoe */ )
-//		assert.equals(8 , /* comodida de las zapatillasZoe*/)
-//		assert.equals(8 , /* comodida de las jeanZoe.comodidad*/)
-//		assert.equals(10 , /* comodida de las remeraZoe*/)
-//		assert.equals(8 , /* comodida de las camperaZoe*/)
-//		assert.equals(7 , /* comodida de las remeraMilena*/)		
-//		assert.equals(10 , /* comodida de las calzaMilena*/)
-//		assert.equals(-3 , /* comodida de las ojotasMilena*/)
-//	}
+
+test "comodidad" {
+	
+	    assert.equals(6 ,mediasZoe.nivelDeComodidaParaUnNinio(zoe))
+		assert.equals(8 ,zapatillasZoe.nivelDeComodidaParaUnNinio(zoe))
+		assert.equals(8 ,jeanZoe.nivelDeComodidaParaUnNinio(zoe))
+	    assert.equals(10 ,remeraZoe.nivelDeComodidaParaUnNinio(zoe))
+	    assert.equals(8 ,camperaZoe.nivelDeComodidaParaUnNinio(zoe))
+	    assert.equals(7 , remeraMilena.nivelDeComodidaParaUnNinio(zoe))		
+	    assert.equals(10 , calzaMilena.nivelDeComodidaParaUnNinio(zoe))
+	    assert.equals(-3 , ojotasMilena.nivelDeComodidaParaUnNinio(zoe))
+	    	}
 
 //PUNTO 2		
 	test "intercambiar pares ok" {
@@ -64,9 +70,7 @@ describe "test de una familia que NO pasea" {
 		var mediaDer = mediasZoe.derecho()
 		var zapaIzq = zapatillasZoe.izquierdo()
 		var zapaDer = zapatillasZoe.derecho()
-		
-		mediasZoe.intercambiar(zapatillasZoe)
-
+		mediasZoe.intercambiarPares(zapatillasZoe)
 		assert.equals(mediaIzq, mediasZoe.izquierdo())
 		assert.equals(mediaDer, zapatillasZoe.derecho())
 		assert.equals(zapaIzq, zapatillasZoe.izquierdo())
@@ -78,46 +82,46 @@ describe "test de una familia que NO pasea" {
 		//Que sucede si intercambio un par de talles distinto?
 		//probar el cambio entre las ojotas de milena y las medias de zoe
 		//El test está incompleto!
-		ojotasMilena.intercambiar(mediasZoe)
+		ojotasMilena.intercambiarPares(mediasZoe)
 	}
 
 //PUNTO 3	
-//	test "nivel de abrigo" {
-//		assert.equals(2 , /* abrigo de mediasZoe*/)
-//		assert.equals(2 , /* abrigo de zapatillasZoe*/)
-//		assert.equals(5 , /* abrigo de jeanZoe */)
-//		assert.equals(1 , /* abrigo de remeraZoe*/)
-//		assert.equals(3 , /* abrigo de camperaZoe*/)
-//		assert.equals(1 , /* abrigo de remeraMilena*/)		
-//		assert.equals(1 , /* abrigo de calzaMilena*/)
-//		assert.equals(5 , /* abrigo de ojotasMilena*/)
-//	}
+test "nivel de abrigo" {
+	assert.equals(2 ,mediasZoe.nivelDeAbrigo())
+	assert.equals(2 ,  zapatillasZoe.nivelDeAbrigo())
+	assert.equals(5 ,  jeanZoe.nivelDeAbrigo())
+	assert.equals(1 ,  remeraZoe.nivelDeAbrigo())
+	assert.equals(3 ,  camperaZoe.nivelDeAbrigo())
+	assert.equals(1 , remeraMilena.nivelDeAbrigo())		
+	assert.equals(1 , calzaMilena.nivelDeAbrigo())
+	assert.equals(5 , ojotasMilena.nivelDeAbrigo())
+	}
 
 //PUNTO 4		
 	test "puede salir de paseo" {
-		assert.that(familiaAptaSalir.puedePasear())
-		assert.notThat(familiaNoAptaParaSalir.puedePasear())
+		assert.that(familiaAptaSalir.puedeSalirDePaseo())
+		assert.notThat(familiaNoAptaParaSalir.puedeSalirDePaseo())
 	}
 //PUNTO 5
 	
 	test "infaltables" {
-		assert.equals(#{jeanZoe,calzaMilena}, familiaNoAptaParaSalir.infaltables())		
+		assert.equals(#{jeanZoe,calzaMilena},familiaNoAptaParaSalir.prendasInfaltables())		
 	}
 	test "chiquitos" {
-		assert.equals(#{milena}, familiaNoAptaParaSalir.chiquitos()
+		assert.equals(#{milena}, familiaNoAptaParaSalir.niniosChiquitos()
 		)		
 	}
 	
 //PUNTO 6	
 test "salir de paseo ok" {
 		familiaAptaSalir.pasear()
-		assert.equals(1.8 , mediaIzquierda.desgaste())
-		assert.equals(4.2 , mediaDerecha.desgaste())
-		assert.equals(3 , mediasZoe.desgaste())
-		assert.equals(1 , zapatillasZoe.desgaste())
-		assert.equals(1 , jeanZoe.desgaste())
-		assert.equals(1 , remeraZoe.desgaste())
-		assert.equals(1 , camperaZoe.desgaste())
+		assert.equals(1.8,mediaIzquierda.nivelDeDesgaste())
+		assert.equals(4.2,mediaDerecha.nivelDeDesgaste())
+		assert.equals(3,mediasZoe.nivelDeDesgaste())
+		assert.equals(1,zapatillasZoe.nivelDeDesgaste())
+		assert.equals(1,jeanZoe.nivelDeDesgaste())
+		assert.equals(1,remeraZoe.nivelDeDesgaste())
+		assert.equals(1 ,camperaZoe.nivelDeDesgaste())
 		
 	}
 //PUNTO 7	
@@ -128,4 +132,10 @@ test "salir de paseo ok" {
 	}
 	
 	
+
 }
+	
+	
+
+
+
