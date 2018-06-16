@@ -82,6 +82,7 @@ test "comodidad" {
 		//Que sucede si intercambio un par de talles distinto?
 		//probar el cambio entre las ojotas de milena y las medias de zoe
 		//El test está incompleto!
+		//TODO: chequear por error!
 		ojotasMilena.intercambiarPares(mediasZoe)
 	}
 

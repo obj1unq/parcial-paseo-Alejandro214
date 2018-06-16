@@ -1,3 +1,17 @@
+//Nota 5(cinco): Presenta problema en el manejo del estado interno de los objetos.
+
+//test: solo el de niños chiquitos anda
+//1) Regular+. Se marea al calcular la comoidad a partir de un atributo del niño. La comoidad no se mantiene en una variable, se debe calcular
+//2) Regular+. Está bien el manejo de error, pero el uso de colecciones queda incómodo y lo lleva a cometer un importante bug
+//3) Regular. Presenta problemas en el manejo del estado interno de los objetos
+//4) Regular+. Se confunde con el manejo de booleanos. También tiene problemas cumpliendo la funcionalidad
+//5) MB
+//6) MB
+//7) B (delegar mejor el conocimiento de cuando un niño es pequeño)
+//8) REGULAR: La estrategia está bien, el error está bien, pero el manejo del estado interno del desgaste está mal
+
+
+
 
 
 //Esta clase no debe existir, 
@@ -15,6 +29,7 @@ class Familia {
    }
    method prendasInfaltables() = ninios.map({ninio=>ninio.prendaInfaltable()}).asSet()
   
+  //TODO: Repite el código para saber si un ninio es chiquito.
    method niniosChiquitos() = ninios.filter({ninio=>ninio.edad() <= 4})
    
    method salirDePaseo() {
@@ -30,11 +45,13 @@ class Familia {
 class Prenda {
 	
 	var talle
-	var desgaste 
+	var desgaste //TODO Esto no sirve para todas las prendas (las pares no lo requieren)
 	var nivelDeAbrigo
     
     method nivelDeDesgaste() = desgaste
     
+    //TODO: el mensaje sería min(3) ya que queres el numero mas chico entre el desgaste y el 3.
+    //La comodidad no depende del niño, si no de la misma prenda 
     method nivelDeComodidaParaUnNinio(unNinio) = unNinio.comodida() - self.nivelDeDesgaste().max(3)
     
 	
@@ -71,7 +88,9 @@ class PrendaPares inherits Prenda{
     	}
     }
     override method efectoDeDesgasteDeUnNinio(unNinio) {
+    	//TODO: La comodidad del niño no tiene que ver. Esta linea quedo duplicada
     	unNinio.decrementarComodidad(desgaste)
+    	//TODO: Aca hay que desgastar los elementos izquierdo y derecho
     	unNinio.aumentarComodidad(2)
     	
     	
@@ -94,9 +113,9 @@ class PrendaPares inherits Prenda{
         self.agregarParNuevo(derechoMio)
         unPar.agregarParNuevo(izquierdoMio)
         unPar.agregarParNuevo(derechoDeUnPar)
+        //TODO: Estás dejando los cuatro elementos en cada par!
         
    }
-   
    
    
    method agregarParNuevo(par){
@@ -105,10 +124,13 @@ class PrendaPares inherits Prenda{
    
    
 }
+//TODO: MALISIMA HERENCIA! que necesita de Prenda? hereda cosas que no necesita
 class PrendaPar inherits Prenda{
 	var property numeroPar 
 	
+	//TODO= NO! dice que el deault es 1, pero puede variar!
 	override method nivelDeAbrigo() = 1
+	
 	
 	override method efectoDeDesgasteDeUnNinio(unNinio) {}
 }
@@ -117,10 +139,13 @@ class PrendaPar inherits Prenda{
 
 class PrendaLiviana inherits Prenda{
 	
+	//TODO: Este valor debería poder ser cambiado!
 	override method nivelDeAbrigo() = 1
 	
 	override method efectoDeDesgasteDeUnNinio(unNinio) {
+		//TODO: No hay nada que modificar en el niño, y si lo hubiera esta linea quedo duplicada
 		unNinio.decrementarComodidad(desgaste)
+		//TODO: Esta linea que modifica el desgaste está duplicada en PrendaPEsada
 		desgaste +=1
 		self.sumarComodidaANinio(unNinio)
 	}
@@ -146,6 +171,7 @@ class PrendaPesada inherits Prenda{
 class Ninio {
 	var edad
 	var prendas = #{}
+	//Esto no es algo que se recuerde, la comodidad se calcula según la prenda
 	var comodidad 
 	
 	method comodidad() = comodidad
@@ -165,12 +191,15 @@ class Ninio {
 	method decrementarComodidad(unaCantidad) {comodidad -= unaCantidad.max(3)}
 	
 	method estaListoParaSalir() = 
+	//TODO: EL if es innecesario! La condición es el mismo booleano que necesitás devolver!
+	//Faltan los returns!
 	if(self.cantidadDePrendasNecesariasParaSalir() >=self.cantidadDePrendas()){
 		prendas.any({prenda=> prenda.nivelDeAbrigo()>=3}) and
 		self.tieneNivelDeCalidadDePrendas()
 	}else false
 	
 	
+	//TODO: El promedio debe superar 8, no todas las prendas!
 	method tieneNivelDeCalidadDePrendas() = prendas.all({prenda=>prenda.nivelDeCalidad(self) > 8 })
 	
 	method cantidadDePrendas() = prendas.size()
